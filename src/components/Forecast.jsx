@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 
 const Forecast = ({ data, darkMode }) => {
+  const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  
   const dailyForecast = data.list.reduce((acc, item) => {
     const date = new Date(item.dt * 1000);
     const dateString = date.toISOString().split('T')[0];
@@ -26,10 +28,7 @@ const Forecast = ({ data, darkMode }) => {
               className={`p-4 rounded-lg text-center transition-colors duration-300 ${darkMode ? 'bg-gray-700 text-gray-100' : 'bg-gray-100 text-gray-900'}`}
             >
               <p className="font-medium mb-2">
-                {date.toLocaleDateString('en-US', { 
-                  weekday: 'short',
-                  timeZone: 'UTC'
-                })}
+                {weekdays[date.getUTCDay()]}
               </p>
               <img
                 src={`https://openweathermap.org/img/wn/${items[0].weather[0].icon}@2x.png`}
@@ -37,7 +36,7 @@ const Forecast = ({ data, darkMode }) => {
                 className="w-12 h-12 mx-auto"
               />
               <p className={`mt-2 ${darkMode ? 'text-gray-200' : 'text-gray-700'}`}>
-                {Math.round(items.reduce((sum, item) => sum + item.main.temp_max, 0) / items.length}°C
+                {Math.round(items.reduce((sum, item) => sum + item.main.temp_max, 0) / items.length)}°C
               </p>
             </motion.div>
           );
